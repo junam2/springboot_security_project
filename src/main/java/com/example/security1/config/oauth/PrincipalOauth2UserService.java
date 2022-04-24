@@ -3,6 +3,7 @@ package com.example.security1.config.oauth;
 import com.example.security1.config.auth.PrincipalDetails;
 import com.example.security1.config.oauth.provider.FacebookUserInfo;
 import com.example.security1.config.oauth.provider.GoogleUserInfo;
+import com.example.security1.config.oauth.provider.NaverUserInfo;
 import com.example.security1.config.oauth.provider.OAuth2UserInfo;
 import com.example.security1.model.User;
 import com.example.security1.repository.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
+import java.util.Map;
 
 @Service
 public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
@@ -45,7 +47,11 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         } else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
             System.out.println("facebook login request");
             oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes());
-        } else {
+        } else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+            System.out.println("naver login request");
+            oAuth2UserInfo = new NaverUserInfo((Map) oauth2User.getAttributes().get("response"));
+        }
+        else {
             System.out.println("only google, facebook enable");
         }
 
